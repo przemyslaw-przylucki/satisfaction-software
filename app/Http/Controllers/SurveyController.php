@@ -19,7 +19,7 @@ class SurveyController
      */
     public function index(Request $request)
     {
-        $surveys = $request->user()->team->surveys;
+        $surveys = $request->user()->team->surveys()->withCount('submissions')->get();
 
         return view('surveys.index', [
             'surveys' => $surveys
