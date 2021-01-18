@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\SurveyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,3 +17,14 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+Route::get('/surveys', [SurveyController::class, 'index'])->name('surveys.index');
+Route::get('/surveys/create', [SurveyController::class, 'create']);
+Route::post('/surveys', [SurveyController::class, 'store'])->name('surveys.store');
+Route::get('/surveys/{survey}', [SurveyController::class, 'details'])->name('surveys.details');
+
+require __DIR__.'/auth.php';

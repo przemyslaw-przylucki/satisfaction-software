@@ -2,7 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Models\User;
+use App\Models\Team;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +16,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        Role::query()->delete();
+        User::truncate();
+        Team::truncate();
+
+        $role = Role::create([
+            'name' => 'team_lead'
+        ]);
+
+        $team = Team::factory()->create();
+
+        $user = User::factory()->create([
+            'email' => 'test@example.com',
+            'team_id' => $team->id
+        ]);
+
+        $user->assignRole($role);
     }
 }
